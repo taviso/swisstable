@@ -1,0 +1,8 @@
+syntax: glob
+CMakeCache.txt
+cmake_install.cmake
+CMakeFiles/
+Makefile
+abseil-cpp/
+*.a
+a.out
