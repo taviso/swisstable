@@ -13,29 +13,29 @@ add_subdirectory(abseil-cpp)
 find_package(Threads REQUIRED)
 
 set(DEPENDENT_LIBS
-   "abseil-cpp/absl/hash/libabsl_hash.a"
-   "abseil-cpp/absl/types/libabsl_bad_variant_access.a"
-   "abseil-cpp/absl/hash/libabsl_city.a"
-   "abseil-cpp/absl/container/libabsl_raw_hash_set.a"
-   "abseil-cpp/absl/types/libabsl_bad_optional_access.a"
-   "abseil-cpp/absl/container/libabsl_hashtablez_sampler.a"
-   "abseil-cpp/absl/synchronization/libabsl_synchronization.a"
-   "abseil-cpp/absl/synchronization/libabsl_graphcycles_internal.a"
-   "abseil-cpp/absl/debugging/libabsl_stacktrace.a"
-   "abseil-cpp/absl/debugging/libabsl_symbolize.a"
-   "abseil-cpp/absl/base/libabsl_malloc_internal.a"
-   "abseil-cpp/absl/debugging/libabsl_debugging_internal.a"
-   "abseil-cpp/absl/debugging/libabsl_demangle_internal.a"
-   "abseil-cpp/absl/time/libabsl_time.a"
-   "abseil-cpp/absl/strings/libabsl_strings.a"
-   "abseil-cpp/absl/strings/libabsl_strings_internal.a"
-   "abseil-cpp/absl/base/libabsl_throw_delegate.a"
-   "abseil-cpp/absl/base/libabsl_base.a"
-   "abseil-cpp/absl/base/libabsl_dynamic_annotations.a"
-   "abseil-cpp/absl/base/libabsl_spinlock_wait.a"
-   "abseil-cpp/absl/numeric/libabsl_int128.a"
-   "abseil-cpp/absl/time/libabsl_civil_time.a"
-   "abseil-cpp/absl/time/libabsl_time_zone.a"
+   "abseil-cpp/absl/hash/libabsl_absl_hash.a"
+   "abseil-cpp/absl/types/libabsl_absl_bad_variant_access.a"
+   "abseil-cpp/absl/hash/libabsl_absl_city.a"
+   "abseil-cpp/absl/container/libabsl_absl_raw_hash_set.a"
+   "abseil-cpp/absl/types/libabsl_absl_bad_optional_access.a"
+   "abseil-cpp/absl/container/libabsl_absl_hashtablez_sampler.a"
+   "abseil-cpp/absl/synchronization/libabsl_absl_synchronization.a"
+   "abseil-cpp/absl/synchronization/libabsl_absl_graphcycles_internal.a"
+   "abseil-cpp/absl/debugging/libabsl_absl_stacktrace.a"
+   "abseil-cpp/absl/debugging/libabsl_absl_symbolize.a"
+   "abseil-cpp/absl/base/libabsl_absl_malloc_internal.a"
+   "abseil-cpp/absl/debugging/libabsl_absl_debugging_internal.a"
+   "abseil-cpp/absl/debugging/libabsl_absl_demangle_internal.a"
+   "abseil-cpp/absl/time/libabsl_absl_time.a"
+   "abseil-cpp/absl/strings/libabsl_absl_strings.a"
+   "abseil-cpp/absl/strings/libabsl_absl_strings_internal.a"
+   "abseil-cpp/absl/base/libabsl_absl_throw_delegate.a"
+   "abseil-cpp/absl/base/libabsl_absl_base.a"
+   "abseil-cpp/absl/base/libabsl_absl_dynamic_annotations.a"
+   "abseil-cpp/absl/base/libabsl_absl_spinlock_wait.a"
+   "abseil-cpp/absl/numeric/libabsl_absl_int128.a"
+   "abseil-cpp/absl/time/libabsl_absl_civil_time.a"
+   "abseil-cpp/absl/time/libabsl_absl_time_zone.a"
 )
 
 # I'm an old fashioned GNU Make guy, I'm trying my best, but as far as I can
@@ -60,5 +60,5 @@ add_custom_command(OUTPUT libswisstable.a
 
 add_library(cwrappers STATIC swisstable.cc)
 add_custom_target(swisstable ALL DEPENDS cwrappers libswisstable.a)
-target_link_libraries(cwrappers absl::strings absl::flat_hash_map Threads::Threads)
+target_link_libraries(cwrappers absl::hash absl::strings absl::flat_hash_map Threads::Threads)
 configure_file(swisstable.h swisstable.h COPYONLY)
