@@ -31,3 +31,13 @@ void * swisstable_map_search(void *root, void *key, size_t keysize);
 
 // Call callback for every known key.
 void swisstable_map_foreach(void *root, void (*callback)(void *key, void *value));
+
+void * swisstable_map_create_uintptr(void);
+void swisstable_map_free_uintptr(void *root);
+void * swisstable_map_insert_uintptr(void *root, uintptr_t key, void *value);
+void * swisstable_map_search_uintptr(void *root, uintptr_t key);
+void swisstable_map_foreach_uintptr(void *root, void (*callback)(uintptr_t key, void *value));
+
+void swisstable_set_reserve(void *root, size_t sizehint);
+void swisstable_map_reserve(void *root, size_t sizehint);
+void swisstable_map_reserve_uintptr(void *root, size_t sizehint);
