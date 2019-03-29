@@ -1,16 +1,14 @@
 # Required as the first line
 cmake_minimum_required(VERSION 3.5)
 
-# NOTE: -DNDEBUG and -Ox is *required* for abseil to be fast, otherwise you get
-# a sloooow non-release build. Arguably this a missing documentation bug.
-set(CMAKE_CXX_FLAGS "-DNDEBUG -Ofast -march=native")
-set(ABSL_RUN_TESTS OFF)
-
 # Define the current project
 project(swisstable VERSION 0.1)
 
 # Tell Abseil which C++ standard to use
 set(CMAKE_CXX_STANDARD 17)
+
+# This is required for a fast build
+set(CMAKE_BUILD_TYPE Release)
 
 # Process abseil with CMake
 add_subdirectory(abseil-cpp)
