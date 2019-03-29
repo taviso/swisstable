@@ -1,13 +1,13 @@
-# Accessing Abseil SwissTables from C
+# Accessing Abseil Swiss Tables from C
 
 This is a tiny wrapper library allowing C code to use [Swiss Tables](https://abseil.io/blog/20180927-swisstables), Google's
 state-of-the-art hash table implementation.
 
-There is no pure C implementation of Swiss Tables, so it can't be used without a wrapper library. I think the majority of C programmers use POSIX `hcreate(3)` when they need a hash table, which is portable across UNIX systems.
+There is no pure C implementation of Swiss Tables, so they currently can't be used without a wrapper library.
 
-I had a question, are Swiss Tables so good that I should start using them in C code instead of [`hcreate()`](http://pubs.opengroup.org/onlinepubs/009695299/functions/hcreate.html) or even GLib's [`GHashTable`](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html)?
+I had a question: Are Swiss Tables so good that I should start using them in C code instead of [`hcreate()`](http://pubs.opengroup.org/onlinepubs/009695299/functions/hcreate.html) or even GLib's [`GHashTable`](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html)?
 
-Here is a quick test to find out.
+This library is my attempt to find out.
 
 # Building
 
@@ -30,7 +30,7 @@ $ gcc -pthread yourcode.c libswisstable.a -lstdc++ -lm
 To compile the benchmark use:
 
 ```bash
-$ gcc -O3 -DNDEBUG -march=native -pthread -o benchmark benchmark.c libswisstable.a $(pkg-config --cflags --libs glib-2.0) -lm -lstdc++
+$ gcc -O3 -pthread -o benchmark benchmark.c libswisstable.a $(pkg-config --cflags --libs glib-2.0) -lm -lstdc++
 ```
 
 The benchmark requires `libglib2.0-dev` to compare against `GHashTable`.
@@ -51,12 +51,9 @@ GHashTable ENTRY completed in 5 seconds, 261506 duplicates
 swisstable_map_insert ENTRY completed in 3 seconds, 261506 duplicates
 ```
 
-Pretty impressive default performance without any tuning. I think the answer is
-"yes, you should consider switching C code to Swiss Tables if you have
-performance critical hash tables".
+Pretty impressive default performance without any tuning. Certainly results will depend on workload, but I think you should consider switching C code to Swiss Tables if you have performance critical hash tables.
 
-You can extend the wrapper code to allow specifying custom hashing routines,
-and so on (not implemented yet).
+You can extend the wrapper code to allow specifying custom hashing routines, and so on (not implemented from C yet).
 
 # Example
 
@@ -90,15 +87,35 @@ $ gcc example.c -pthread libswisstable.a -lstdc++ -lm
 
 # Notes
 
-You can use anything as a key - strings, structs, integers, floats, etc. However, be
-aware that whatever you pass is interpreted as a buffer of size keylen, so if
-you're using a struct, structure padding might cause unexpected results.
+You can use a pointer to anything as a key - strings, structs, integers, floats, etc.
 
-Either initialize structures with `calloc`/`memset`, or use
-`__attribute__((packed))` or equivalent.
+```c
+swisstable_map_insert(swisstable, &key, sizeof key, value);
+swisstable_map_insert(swisstable, string, strlen(string), value);
+swisstable_map_insert(swisstable, buf, buflen, value);
+// etc..
+```
 
-You can also use `swisstable_map_create_uintptr` if you're using an integer
-type that doesn't require a pointer.
+However, be aware that whatever you pass is interpreted as a buffer of size keylen, so if you're using a struct, structure padding might cause unexpected results when uninitialized data is mixed into the hash. To avoid this, either initialize structures with `calloc`/`memset`, or use `__attribute__((packed))` or equivalent to avoid padding.
+
+You can also use `swisstable_map_create_uintptr` if you're using integer types as keys, or only want a direct comparison between pointers (The GLib equivalent would be [g_direct_equal](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html#g-direct-equal)).
+
+Currently sets and maps are exposed. A map associates keys with values, whereas a set only stores keys. You might use sets for deduplication or counting unique values, or if the key already contains the value (The GLib equivalent would be [g_hash_table_add ](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html#g-hash-table-add)).
+
+I sometimes do something like this with sets, so the value isn't necessary, I just need to lookup by key:
+
+```c
+struct foo {
+ uint64_t key;
+ int data1;
+ int data2;
+ int data3;
+};
+
+struct foo bar;
+
+swisstable_set_insert(root, &bar, sizeof(bar.key));
+```
 
 # API
 
