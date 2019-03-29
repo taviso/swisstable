@@ -23,14 +23,17 @@ int main(int argc, char **argv)
     ENTRY *strdata = calloc(kNumEntries, sizeof(ENTRY));
     ENTRY *intdata = calloc(kNumEntries, sizeof(ENTRY));
 
-    // Generate n strings
+    // Seed prng
+    srand(time(0));
+
+    // Generate kNumEntries random strings.
     for (int n = 0; n < kNumEntries; n++) {
         intptr_t num = rand();
         strdata[n].data = (void *)(num);
         asprintf(&strdata[n].key, "%d", (intptr_t)(strdata[n].data));
 
-        // Try with integer key as well (only glib and swiss, hcreate doesnt
-        // support anything except strings).
+        // Try with integer key as well (only glib and swisstables, hcreate
+        // doesnt support anything except string keys).
         intdata[n].key = GINT_TO_POINTER(num);
         intdata[n].data = strdata[n].key;
     }
@@ -41,6 +44,8 @@ int main(int argc, char **argv)
     ghashtable = g_hash_table_new(g_str_hash, g_str_equal);
     ghashtableint = g_hash_table_new(g_int64_hash, g_int64_equal);
 
+    // Give swisstables a hint how many entries there will be for a fair
+    // comparison to hcreate(3).
     swisstable_map_reserve(swisstable, kNumEntries);
     swisstable_map_reserve_uintptr(swisstableint, kNumEntries);
 
@@ -59,7 +64,9 @@ int main(int argc, char **argv)
         }
     }
 
-    fprintf(stdout, "hsearch(3) ENTRY completed in %ld seconds, %u duplicates\n", time(0) - start, duplicates);
+    fprintf(stdout, "hsearch(3) ENTRY completed in %ld seconds, %u duplicates\n",
+                    time(0) - start,
+                    duplicates);
 
     duplicates = 0;
     start = time(0);
@@ -76,7 +83,9 @@ int main(int argc, char **argv)
         }
     }
 
-    fprintf(stdout, "swisstable_map_insert ENTRY completed in %ld seconds, %u duplicates\n", time(0) - start, duplicates);
+    fprintf(stdout, "swisstable_map_insert ENTRY completed in %ld seconds, %u duplicates\n",
+                    time(0) - start,
+                    duplicates);
 
     duplicates = 0;
     start = time(0);
@@ -92,7 +101,9 @@ int main(int argc, char **argv)
         }
     }
 
-    fprintf(stdout, "GHashTable ENTRY completed in %ld seconds, %u duplicates\n", time(0) - start, duplicates);
+    fprintf(stdout, "GHashTable ENTRY completed in %ld seconds, %u duplicates\n",
+                    time(0) - start,
+                    duplicates);
 
     fprintf(stdout, "Trying integer keys...\n");
 
@@ -110,7 +121,9 @@ int main(int argc, char **argv)
         }
     }
 
-    fprintf(stdout, "GHashTable ENTRY completed in %ld seconds, %u duplicates\n", time(0) - start, duplicates);
+    fprintf(stdout, "GHashTable ENTRY completed in %ld seconds, %u duplicates\n",
+                    time(0) - start,
+                    duplicates);
 
     duplicates = 0;
     start = time(0);
@@ -126,7 +139,9 @@ int main(int argc, char **argv)
         }
     }
 
-    fprintf(stdout, "swisstable_map_insert ENTRY completed in %ld seconds, %u duplicates\n", time(0) - start, duplicates);
+    fprintf(stdout, "swisstable_map_insert ENTRY completed in %ld seconds, %u duplicates\n",
+                    time(0) - start,
+                    duplicates);
 
     for (int n = 0; n < kNumEntries; n++) {
         free(strdata[n].key);
