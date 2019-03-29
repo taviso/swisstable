@@ -5,4 +5,5 @@ CMakeFiles/
 Makefile
 abseil-cpp/
 *.a
+*.mri
 a.out
