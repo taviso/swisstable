@@ -1,16 +1,11 @@
 # Accessing Abseil SwissTables from C
 
-This is a tiny wrapper library allowing C code to use SwissTables, Google's
+This is a tiny wrapper library allowing C code to use [Swiss Tables](https://abseil.io/blog/20180927-swisstables), Google's
 state-of-the-art hash table implementation.
 
-There is no pure C implementation of SwissTables, so it can't be used without a
-wrapper library. I think the majority of C programmers use POSIX `hcreate(3)`
-when they need a hash table, which is portable across UNIX systems.
+There is no pure C implementation of Swiss Tables, so it can't be used without a wrapper library. I think the majority of C programmers use POSIX `hcreate(3)` when they need a hash table, which is portable across UNIX systems.
 
-I had a question, are SwissTables so good that I should start using them in C
-code instead of
-[`hcreate()`](http://pubs.opengroup.org/onlinepubs/009695299/functions/hcreate.html)
-or even GLib's [`GHashTable`](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html)?
+I had a question, are Swiss Tables so good that I should start using them in C code instead of [`hcreate()`](http://pubs.opengroup.org/onlinepubs/009695299/functions/hcreate.html) or even GLib's [`GHashTable`](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html)?
 
 Here is a quick test to find out.
 
