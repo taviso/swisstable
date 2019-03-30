@@ -4,10 +4,6 @@
 #include "absl/container/flat_hash_set.h"
 #include "absl/container/flat_hash_map.h"
 
-typedef absl::flat_hash_set<std::string_view> swisstableset_t;
-typedef absl::flat_hash_map<std::string_view, void *> swisstablemap_t;
-typedef absl::flat_hash_map<uintptr_t, void *> swisstableumap_t;
-
 extern "C" {
     #include "swisstable.h"
 }

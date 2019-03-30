@@ -1,7 +1,11 @@
 #ifndef __SWISSTABLE_H
 #define __SWISSTABLE_H
 
-#ifndef __cplusplus
+#ifdef __cplusplus
+typedef absl::flat_hash_set<std::string_view> swisstableset_t;
+typedef absl::flat_hash_map<std::string_view, void *> swisstablemap_t;
+typedef absl::flat_hash_map<uintptr_t, void *> swisstableumap_t;
+#else
 typedef struct swisstableset swisstableset_t;
 typedef struct swisstablemap swisstablemap_t;
 typedef struct swisstableumap swisstableumap_t;
