@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv)
 {
-    void *swisstable = swisstable_map_create();
+    swisstablemap_t *swisstable = swisstable_map_create();
 
     if (argc != 3) {
         printf("Usage: %s key value\n", *argv);

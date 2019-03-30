@@ -30,7 +30,7 @@ int main(int argc, char **argv)
     for (int n = 0; n < kNumEntries; n++) {
         intptr_t num = rand();
         strdata[n].data = (void *)(num);
-        asprintf(&strdata[n].key, "%d", (intptr_t)(strdata[n].data));
+        asprintf(&strdata[n].key, "%ld", (intptr_t)(strdata[n].data));
 
         // Try with integer key as well (only glib and swisstables, hcreate
         // doesnt support anything except string keys).
