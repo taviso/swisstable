@@ -35,7 +35,8 @@ set(DEPENDENT_LIBS "$<TARGET_FILE:cwrappers>"
                    "$<TARGET_FILE:absl::spinlock_wait>"
                    "$<TARGET_FILE:absl::malloc_internal>"
                    "$<TARGET_FILE:absl::dynamic_annotations>"
-)
+                   "$<TARGET_FILE:absl::graphcycles_internal>"
+                   "$<TARGET_FILE:absl::raw_hash_set>")
 
 # Obviously this is going to break at some point, but what are you supposed to do?
 add_custom_command(OUTPUT libswisstable.a
@@ -44,16 +45,15 @@ add_custom_command(OUTPUT libswisstable.a
         printf "addlib %s\\\\n" ${DEPENDENT_LIBS}   >> libswisstable.mri\;
         printf "save\\\\nend\\\\n"                  >> libswisstable.mri\;
         ar -M < libswisstable.mri
-    COMMENT "Creating libswisstable.a"
-)
-
+    COMMENT "Creating libswisstable.a")
 
 add_library(cwrappers STATIC swisstable.cc)
 add_custom_target(swisstable ALL DEPENDS cwrappers libswisstable.a)
 target_link_libraries(cwrappers absl::flat_hash_map
                                 absl::flat_hash_set
 
-# These are not required directly, but making sure they get built.
+                                # These are indirect dependencies, just listing
+                                # them here to make sure they get built.
                                 absl::base
                                 absl::hash
                                 absl::synchronization
@@ -69,5 +69,7 @@ target_link_libraries(cwrappers absl::flat_hash_map
                                 absl::spinlock_wait
                                 absl::malloc_internal
                                 absl::dynamic_annotations
+                                absl::graphcycles_internal
+                                absl::raw_hash_set
                                 Threads::Threads)
 configure_file(swisstable.h swisstable.h COPYONLY)
