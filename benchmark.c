@@ -10,7 +10,7 @@
 
 #include "swisstable.h"
 
-static const int kNumEntries = 1 << 25;
+static const int kNumEntries = 1 << 24;
 
 int main(int argc, char **argv)
 {
