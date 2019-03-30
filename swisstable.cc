@@ -25,7 +25,6 @@ extern "C" void swisstable_set_reserve(swisstableset_t *root, size_t sizehint)
 extern "C" void swisstable_set_free(swisstableset_t *root)
 {
     delete root;
-    return;
 }
 
 extern "C" void * swisstable_set_insert(swisstableset_t *root, const void *key, size_t keysize)
@@ -40,7 +39,6 @@ extern "C" void swisstable_set_foreach(swisstableset_t *root, void (*callback)(v
     for (const auto &p : *root) {
         callback(const_cast<char *>(p.data()));
     }
-    return;
 }
 
 extern "C" swisstablemap_t * swisstable_map_create(void)
@@ -66,13 +64,11 @@ extern "C" swisstableumap_t * swisstable_map_create_uintptr(void)
 extern "C" void swisstable_map_free(swisstablemap_t *root)
 {
     delete root;
-    return;
 }
 
 extern "C" void swisstable_map_free_uintptr(swisstableumap_t *root)
 {
     delete root;
-    return;
 }
 
 extern "C" void * swisstable_map_insert(swisstablemap_t *root, const void *key, size_t keysize, void *value)
