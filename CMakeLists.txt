@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 3.5)
 
 # Define the current project
-project(swisstable VERSION 0.1)
+project(swisstable VERSION 0.2)
 
 # Tell Abseil which C++ standard to use
 set(CMAKE_CXX_STANDARD 17)
@@ -36,6 +36,8 @@ set(DEPENDENT_LIBS "$<TARGET_FILE:cwrappers>"
                    "$<TARGET_FILE:absl::malloc_internal>"
                    "$<TARGET_FILE:absl::dynamic_annotations>"
                    "$<TARGET_FILE:absl::graphcycles_internal>"
+                   "$<TARGET_FILE:absl::raw_logging_internal>"
+                   "$<TARGET_FILE:absl::exponential_biased>"
                    "$<TARGET_FILE:absl::raw_hash_set>")
 
 # Obviously this is going to break at some point, but what are you supposed to do?
@@ -70,6 +72,8 @@ target_link_libraries(cwrappers absl::flat_hash_map
                                 absl::malloc_internal
                                 absl::dynamic_annotations
                                 absl::graphcycles_internal
+                                absl::exponential_biased
+                                absl::raw_logging_internal
                                 absl::raw_hash_set
                                 Threads::Threads)
 configure_file(swisstable.h swisstable.h COPYONLY)
