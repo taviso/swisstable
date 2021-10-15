@@ -37,7 +37,7 @@ set(DEPENDENT_LIBS "$<TARGET_FILE:cwrappers>"
                    "$<TARGET_FILE:absl::graphcycles_internal>"
                    "$<TARGET_FILE:absl::raw_logging_internal>"
                    "$<TARGET_FILE:absl::exponential_biased>"
-                   "$<TARGET_FILE:absl::wyhash>"
+                   "$<TARGET_FILE:absl::low_level_hash>"
                    "$<TARGET_FILE:absl::raw_hash_set>")
 
 # Obviously this is going to break at some point, but what are you supposed to do?
